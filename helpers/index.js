@@ -8,3 +8,13 @@ export function getColumnName(userCurrency) {
 		return "price_eur"
 	}
 }
+
+export function getSymbolForCurrency(userCurrency) {
+	if (userCurrency === "USD") {
+		return "$"
+	} else if (userCurrency === "UAH") {
+		return "₴"
+	} else if (userCurrency === "EUR") {
+		return "€"
+	}
+}

@@ -1,4 +1,4 @@
-import {InlineKeyboard} from "grammy";
+import { InlineKeyboard } from "grammy"
 
 export const mainKeyboard = new InlineKeyboard().
 		text('📋 Мой список', 'watch_list').
