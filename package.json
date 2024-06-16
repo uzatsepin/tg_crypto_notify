@@ -1,0 +1,26 @@
+{
+  "name": "cryptonotification",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon bot.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@8.15.5+sha1.a58c038faac410c947dbdb93eb30994037d0fce2",
+  "dependencies": {
+    "@grammyjs/hydrate": "^1.4.1",
+    "@grammyjs/storage-free": "^2.4.2",
+    "@supabase/supabase-js": "^2.43.4",
+    "axios": "^1.7.2",
+    "grammy": "^1.24.1",
+    "node-cron": "^3.0.3",
+    "pocketbase": "^0.21.3"
+  },
+  "devDependencies": {
+    "dotenv": "^16.4.5",
+    "nodemon": "^3.1.3"
+  }
+}
