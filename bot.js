@@ -1,15 +1,15 @@
-import { Bot } from 'grammy';
-import dotenv from 'dotenv';
-import {mainKeyboard} from "./keyboards/index.js";
-import { addCoinHandler} from "./handlers/addCoinHandler.js";
-import { hydrate } from "@grammyjs/hydrate";
-import {supabase} from "./supabase/index.js";
-import {watchCoinHandler} from "./handlers/watchCoinHandler.js";
-import {currencyHandler} from "./handlers/currencyHandler.js";
-import {checkPricesHandler} from "./handlers/checkPricesHandler.js";
-import {deleteWatchHandler} from "./handlers/deleteWatchHandler.js";
-import cron from "node-cron";
-import {getCoinData} from "./axios/getCoinData.js";
+import { hydrate } from "@grammyjs/hydrate"
+import dotenv from 'dotenv'
+import { Bot } from 'grammy'
+import cron from "node-cron"
+import { getCoinData } from "./axios/getCoinData.js"
+import { addCoinHandler } from "./handlers/addCoinHandler.js"
+import { checkPricesHandler } from "./handlers/checkPricesHandler.js"
+import { currencyHandler } from "./handlers/currencyHandler.js"
+import { deleteWatchHandler } from "./handlers/deleteWatchHandler.js"
+import { watchCoinHandler } from "./handlers/watchCoinHandler.js"
+import { mainKeyboard } from "./keyboards/index.js"
+import { supabase } from "./supabase/index.js"
 
 dotenv.config();
 
@@ -32,7 +32,6 @@ async function getCachedCoinData(coinValue) {
     const coinData = await getCoinData(coinValue);
     cache.set(coinValue, coinData);
 
-    // Удаление из кэша через 10 минут
     setTimeout(() => cache.delete(coinValue), 600000);
 
     return coinData;
@@ -55,7 +54,7 @@ bot.command('start', async (ctx) => {
                 is_premium: ctx.from.is_premium,
             });
 
-            await ctx.reply(`Приветствую в нашем телеграмм боте, <b>${ctx.from.first_name}</b>.\n\nТут ты можешь добавить монеты для отслеживания.`, {
+            await ctx.reply(`Приветствую в нашем телеграмм боте, <b>${ctx.from.first_name}</b>.\n\nТут ты можешь добавить монеты для отслеживания. Когда монета изменится более чем на 5% на текущей цене, то мы тебя уведомим.`, {
                 reply_markup: mainKeyboard,
                 parse_mode: "HTML"
             })
