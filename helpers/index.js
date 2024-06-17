@@ -18,3 +18,7 @@ export function getSymbolForCurrency(userCurrency) {
 		return "€"
 	}
 }
+
+export function formatNumber(number) {
+	return new Intl.NumberFormat('ru-RU').format(number);
+}

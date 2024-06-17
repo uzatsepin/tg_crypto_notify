@@ -1,6 +1,6 @@
 {
   "name": "cryptonotification",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "",
   "type": "module",
   "main": "index.js",
@@ -11,11 +11,13 @@
   "license": "ISC",
   "packageManager": "pnpm@8.15.5+sha1.a58c038faac410c947dbdb93eb30994037d0fce2",
   "dependencies": {
+    "@grammyjs/conversations": "^1.2.0",
     "@grammyjs/hydrate": "^1.4.1",
     "@grammyjs/storage-free": "^2.4.2",
     "@supabase/supabase-js": "^2.43.4",
     "axios": "^1.7.2",
     "grammy": "^1.24.1",
+    "moment": "^2.30.1",
     "node-cron": "^3.0.3",
     "pocketbase": "^0.21.3"
   },

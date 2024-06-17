@@ -1,5 +1,5 @@
 import { Composer } from "grammy"
-import { getColumnName, getSymbolForCurrency } from "../helpers/index.js"
+import {formatNumber, getColumnName, getSymbolForCurrency} from "../helpers/index.js"
 import { mainKeyboard } from "../keyboards/index.js"
 import { supabase } from "../supabase/index.js"
 
@@ -35,7 +35,7 @@ watchCoinHandler.callbackQuery("watch_list", async (ctx) => {
 		const selectedCurrency = getColumnName(tg_id.currency);
 		const lastPrice = coin_id[selectedCurrency] !== null ? coin_id[selectedCurrency].toFixed(3) : "Не получено";
 		const priceChange1h = coin_id.priceChange1h !== null ? coin_id.priceChange1h.toFixed(2) : "Не получено";
-		return `\n<b>${coin_id.coin_name}</b> – последняя цена: ${lastPrice}${lastPrice === null ? "" : getSymbolForCurrency(tg_id.currency)}, изменения за час: ${priceChange1h}${priceChange1h === null ? "" : "$"} `;
+		return `\n<b>${coin_id.coin_name}</b> – последняя цена: ${formatNumber(lastPrice)}${lastPrice === null ? "" : ` ${getSymbolForCurrency(tg_id.currency)}`}, изменения за час: ${priceChange1h}${priceChange1h === null ? "" : " $"} `;
 	}).join('\n👇 ');
 
 	await ctx.editMessageText(`<b>Вы отслеживаете такие монеты:</b> \n\n👇  ${coinInfo}`, {
