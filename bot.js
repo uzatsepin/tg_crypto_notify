@@ -70,9 +70,9 @@ bot.command('start', async (ctx) => {
     }
 });
 
-cron.schedule('*/30 * * * *', updateCoinPrices);
+cron.schedule('*/10 * * * *', updateCoinPrices);
 
-cron.schedule('*/30 * * * *', checkCoinPrices);
+cron.schedule('*/10 * * * *', checkCoinPrices);
 
 
 bot.catch((err) => console.error(err));
