@@ -19,7 +19,7 @@ async function getCachedCoinData(coinValue) {
 }
 
 async function checkCoinPrices() {
-	console.log('Schedule started');
+	console.log('Started checked coin prices');
 	try {
 		const { data: userCoins, error: userCoinsError } = await supabase
 			.from('user_coins')
