@@ -8,16 +8,7 @@ export const watchCoinHandler = new Composer();
 watchCoinHandler.callbackQuery("watch_list", async (ctx) => {
 	const { data: coins } = await supabase.from("user_coins").select(`
         tg_id (*),
-        coin_id (
-            coin_name,
-            price_eur,
-            price_uah,
-            price_usd,
-            coin_value,
-            priceChange1d,
-            priceChange1h,
-            priceChange1w
-        )
+        coin_id (*)
     `).eq('tg_id', ctx.from.id);
 
 
@@ -30,15 +21,16 @@ watchCoinHandler.callbackQuery("watch_list", async (ctx) => {
 	}
 
 	const coinInfo = coins.map(({ coin_id, tg_id }) => {
-		// console.log(tg_id.currency);
-		console.log(coin_id);
-		const selectedCurrency = getColumnName(tg_id.currency);
-		const lastPrice = coin_id[selectedCurrency] !== null ? coin_id[selectedCurrency].toFixed(3) : "Не получено";
-		const priceChange1h = coin_id.priceChange1h !== null ? coin_id.priceChange1h.toFixed(2) : "Не получено";
-		return `\n<b>${coin_id.coin_name}</b> – последняя цена: ${formatNumber(lastPrice)}${lastPrice === null ? "" : ` ${getSymbolForCurrency(tg_id.currency)}`}, изменения за час: ${priceChange1h}${priceChange1h === null ? "" : " $"} `;
-	}).join('\n👇 ');
+		const lastPrice = coin_id.price_uah !== null ? coin_id.price_uah.toFixed(3) : "🤷‍♂️";
+		const high_24h = coin_id.high_24h !== null ? coin_id.high_24h.toFixed(2) : "🤷‍♂️";
+		const low_24h = coin_id.low_24h !== null ? coin_id.low_24h.toFixed(2) : "🤷‍♂️";
+		const price_change_percentage_24h = coin_id.price_change_percentage_24h !== null ? coin_id.price_change_percentage_24h.toFixed(2) : "🤷‍♂️";
+		const price_change_percentage_7d = coin_id.price_change_percentage_7d !== null ? coin_id.price_change_percentage_7d.toFixed(2) : "🤷‍♂️";
+		const price_change_percentage_14d = coin_id.price_change_percentage_7d !== null ? coin_id.price_change_percentage_7d.toFixed(2) : "🤷‍♂️";
+		return `\n<b>${coin_id.coin_name}</b> – последняя цена: ${formatNumber(lastPrice)}${lastPrice === null ? "" : ` ${getSymbolForCurrency(tg_id.currency)}`}\n\n⬆️ цена за день : ${high_24h} \n⬇️ цена за день: ${low_24h}\n 📝 Изменения за день: ${price_change_percentage_24h}%\n📆Изменения за 7 дней: ${price_change_percentage_7d}%\n💸Изменения за 14 дней: ${price_change_percentage_14d}`;
+	}).join('\n ');
 
-	await ctx.editMessageText(`<b>Вы отслеживаете такие монеты:</b> \n\n👇  ${coinInfo}`, {
+	await ctx.editMessageText(`<b>Вы отслеживаете такие монеты:</b> \n  ${coinInfo}\n`, {
 		reply_markup: mainKeyboard,
 		parse_mode: "HTML"
 	});

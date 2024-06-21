@@ -8,10 +8,11 @@ if (!process.env.API_KEY_COIN_STAT) {
 }
 
 const axiosInstance = axios.create({
-	baseURL: 'https://openapiv1.coinstats.app',
+	baseURL: 'https://api.coingecko.com/api/v3/',
+	method: 'GET',
 	headers: {
 		accept: 'application/json',
-		'X-API-KEY': process.env.API_KEY_COIN_STAT
+		'x-cg-demo-api-key': 'CG-44n14TDCKJf1Uu8uZqMK18Ed'
 	}
 });
 
