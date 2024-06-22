@@ -1,11 +1,11 @@
-import {supabase} from "../supabase/index.js";
-import {Composer, InlineKeyboard} from "grammy";
-import {mainKeyboard} from "../keyboards/index.js";
+import { supabase } from "../supabase/index.js";
+import { Composer, InlineKeyboard } from "grammy";
+import { mainKeyboard } from "../keyboards/index.js";
 
 export const deleteWatchHandler = new Composer();
 
 deleteWatchHandler.callbackQuery('remove_watch', async (ctx) => {
-	const {data:usersCoins} = await supabase.from("user_coins").select(`*, coin_id (*)`).eq("tg_id", ctx.from.id);
+	const {data: usersCoins} = await supabase.from("user_coins").select(`*, coin_id (*)`).eq("tg_id", ctx.from.id);
 
 	if (!usersCoins || usersCoins.length === 0) {
 		await ctx.editMessageText("Вы не отслеживаете ни одной монеты.", {
@@ -15,13 +15,24 @@ deleteWatchHandler.callbackQuery('remove_watch', async (ctx) => {
 		return;
 	}
 
-	const coinsKeyboard =  usersCoins.map((coin) => {
-		return [coin.coin_id.coin_name, `remove_${coin.coin_id.coin_value}`]
+	const coinsKeyboard = usersCoins.map((coin) => {
+		return [coin.coin_id.coin_name, `remove_${coin.coin_id.coin_value}`];
 	});
 
-	const buttonRow = coinsKeyboard.map(([label,data]) => InlineKeyboard.text(label, data))
 
-	const keyboard = InlineKeyboard.from([buttonRow])
+	const buttonRow = coinsKeyboard.map(([label, data]) => InlineKeyboard.text(label, data));
+
+	const rows = [];
+	for (let i = 0; i < buttonRow.length; i += 2) {
+		if (i + 1 < buttonRow.length) {
+			rows.push([buttonRow[i], buttonRow[i + 1]]);
+		} else {
+			rows.push([buttonRow[i]]);
+		}
+	}
+	rows.push([InlineKeyboard.text('🏠 Домой', 'home')]);
+
+	const keyboard = InlineKeyboard.from(rows);
 
 	await ctx.editMessageText('Какую валюту вы хотите удалить из отслеживания? 👇', {
 		reply_markup: keyboard,
@@ -34,7 +45,7 @@ deleteWatchHandler.callbackQuery(/remove_/, async (ctx) => {
 	const coinValue = data.replace("remove_", "");
 
 	// Получаем coin_id по значению валюты
-	const { data: coinData, error: coinError } = await supabase
+	const {data: coinData, error: coinError} = await supabase
 		.from("coins")
 		.select("coin_id")
 		.eq("coin_value", coinValue)
@@ -50,7 +61,7 @@ deleteWatchHandler.callbackQuery(/remove_/, async (ctx) => {
 
 
 	// Удаляем валюту из отслеживания
-	const { error: deleteError } = await supabase
+	const {error: deleteError} = await supabase
 		.from("user_coins")
 		.delete()
 		.eq("tg_id", ctx.from.id)

@@ -27,7 +27,7 @@ watchCoinHandler.callbackQuery("watch_list", async (ctx) => {
 		const price_change_percentage_24h = coin_id.price_change_percentage_24h !== null ? coin_id.price_change_percentage_24h.toFixed(2) : "🤷‍♂️";
 		const price_change_percentage_7d = coin_id.price_change_percentage_7d !== null ? coin_id.price_change_percentage_7d.toFixed(2) : "🤷‍♂️";
 		const price_change_percentage_14d = coin_id.price_change_percentage_7d !== null ? coin_id.price_change_percentage_7d.toFixed(2) : "🤷‍♂️";
-		return `\n<b>${coin_id.coin_name}</b> – последняя цена: ${formatNumber(lastPrice)}${lastPrice === null ? "" : ` ${getSymbolForCurrency(tg_id.currency)}`}\n\n⬆️ цена за день : ${high_24h} \n⬇️ цена за день: ${low_24h}\n 📝 Изменения за день: ${price_change_percentage_24h}%\n📆Изменения за 7 дней: ${price_change_percentage_7d}%\n💸Изменения за 14 дней: ${price_change_percentage_14d}`;
+		return `\n<b>${coin_id.coin_name}</b> – последняя цена: <b>${formatNumber(lastPrice)}${lastPrice === null ? "" : ` ${getSymbolForCurrency(tg_id.currency)}`}</b>\n\n⬆️ ТОП цена за день : <b>${high_24h} ${getSymbolForCurrency(tg_id.currency)}</b>\n⬇️ Самая низкая цена за день: <b>${low_24h} ${getSymbolForCurrency(tg_id.currency)}</b>\n 📝 Изменения за день: <b>${price_change_percentage_24h}%</b>\n📆Изменения за 7 дней: <b>${price_change_percentage_7d}</b>%\n💸Изменения за 14 дней: <b>${price_change_percentage_14d}%</b>`;
 	}).join('\n ');
 
 	await ctx.editMessageText(`<b>Вы отслеживаете такие монеты:</b> \n  ${coinInfo}\n`, {

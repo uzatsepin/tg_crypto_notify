@@ -44,7 +44,7 @@ addCoinHandler.callbackQuery("add_watch", async (ctx) => {
 	}
 
 	await ctx.editMessageText('Укажите, какую монету вы хотите добавить для отслеживания: 👇', {
-		reply_markup: keyboard
+		reply_markup: keyboard.text("🏠 Домой", "home")
 	});
 });
 

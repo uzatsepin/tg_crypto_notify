@@ -3,8 +3,8 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-if (!process.env.API_KEY_COIN_STAT) {
-    throw new Error("API_KEY_COIN_STAT is not defined in the environment variables.");
+if (!process.env.API_COIN_GEKO) {
+    throw new Error("API is not defined in the environment variables.");
 }
 
 const axiosInstance = axios.create({

@@ -11,24 +11,17 @@ currencyHandler.callbackQuery('currency', async (ctx) => {
 		['EUR', 'currency_EUR'],
 		['UAH', 'currency_UAH'],
 	]
-
 	const buttonRow = currency.map(([label,data]) => InlineKeyboard.text(label, data))
 	const keyboard = InlineKeyboard.from([buttonRow])
-
 	try {
-
 		const {data: currency} = await supabase.from("tg_users").select("currency").eq("tg_id", ctx.from.id);
-
 		await ctx.editMessageText(`Сейчас выбарнная вами валюта – <b>💲${currency[0].currency}</b>, она установлена по умолчанию. \n\nВыберите валюту: 👇`, {
 			reply_markup: keyboard,
 			parse_mode: 'HTML'
 		})
-
 	} catch (e) {
 		console.log(e);
 	}
-
-
 })
 
 addCoinHandler.callbackQuery(/currency_/, async (ctx) => {
