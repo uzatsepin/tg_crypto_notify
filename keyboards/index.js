@@ -6,5 +6,5 @@ export const mainKeyboard = new InlineKeyboard().
 		text('➕ Добавить валюту', 'add_watch').
 		text('➖ Удалить валюту', 'remove_watch').row().
 		text('📈 Тренды', 'trends').row().
-		text('🙋‍♂️ Профиль', 'profile')
+		text('🙋‍♂️ Профиль', 'profile').row().text('test', 'test')
 

@@ -63,14 +63,7 @@ addCoinHandler.callbackQuery(/price_/, async (ctx) => {
 			})
 			.eq("coin_value", coinData.id);
 
-		await ctx.editMessageText(`Данные по валюте 👉 <b>${coinData.name}</b>:
-			\n\n🌏 Мировой рейтинг 👉 <b>${coinData.market_cap_rank}</b>
-			\n🤑 Цена в ${userCurrency} 👉 <b>${coinData.market_data.current_price[priceField]}</b>
-			\n🔥Самая высокая цена за <i>час</i> 👉 <b>${coinData.market_data.high_24h[priceField]}${getSymbolForCurrency(userCurrency)}</b>
-			\n❄️Самая низкая цена за <i>день</i> 👉 <b>${coinData.market_data.low_24h[priceField]}</b>
-			\n🌞 Изменения цены за <i>день</i> 👉 <b>${coinData.market_data.price_change_percentage_24h}%</b>
-			\n📆 Изменения цены за <i>7 дней</i> 👉 <b>${coinData.market_data.price_change_percentage_7d}%</b>
-			\n% Изменение цены за <i>14 дней</i> 👉 <b>${coinData.market_data.price_change_percentage_14d}%</b>`, {
+		await ctx.editMessageText(`Данные по валюте 👉 <b>${coinData.name}</b>:\n\n🌏 Мировой рейтинг 👉 <b>${coinData.market_cap_rank}</b>\n🤑 Цена в ${userCurrency} 👉 <b>${coinData.market_data.current_price[priceField]}${getSymbolForCurrency(userCurrency)}</b>\n🔥 Самая высокая цена за <i>час</i> 👉 <b>${coinData.market_data.high_24h[priceField].toFixed(3)}${getSymbolForCurrency(userCurrency)}</b>\n❄️Самая низкая цена за <i>день</i> 👉 <b>${coinData.market_data.low_24h[priceField].toFixed(3)}${getSymbolForCurrency(userCurrency)}</b>\n🌞 Изменения цены за <i>день</i> 👉 <b>${coinData.market_data.price_change_percentage_24h.toFixed(2)}%</b>\n📆 Изменения цены за <i>7 дней</i> 👉 <b>${coinData.market_data.price_change_percentage_7d.toFixed(2)}%</b>\n% Изменение цены за <i>14 дней</i> 👉 <b>${coinData.market_data.price_change_percentage_14d.toFixed(2)}%</b>`, {
 			reply_markup: mainKeyboard, parse_mode: "HTML",
 		},);
 	} catch (error) {

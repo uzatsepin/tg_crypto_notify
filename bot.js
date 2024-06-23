@@ -9,12 +9,12 @@ import { deleteWatchHandler } from "./handlers/deleteWatchHandler.js"
 import { watchCoinHandler } from "./handlers/watchCoinHandler.js"
 import { mainKeyboard } from "./keyboards/index.js"
 import { supabase } from "./supabase/index.js"
-import { checkCoinPrices } from "./helpers/priceChecker.js";
-import { updateCoinPrices } from "./helpers/priceUpdater.js";
 import { getPercentFromUser, profileHandler } from "./handlers/profileHandler.js";
 import { conversations, createConversation } from "@grammyjs/conversations";
 import { homeHandler } from "./handlers/homeHandler.js";
 import { trendsHandler } from "./handlers/trendingHandler.js";
+import { updateCoinPrices } from "./helpers/updateCoinPrices.js";
+import { dailyDigest } from "./helpers/dailyDigest.js";
 
 dotenv.config();
 
@@ -72,10 +72,15 @@ bot.command('start', async (ctx) => {
 	}
 });
 
-// cron.schedule('*/10 * * * *', updateCoinPrices);
-//
-// cron.schedule('*/10 * * * *', checkCoinPrices);
+cron.schedule('1 10 * * *', async () => {
+	console.log('Запуск updateCoinPrices() в 10:01');
+	await updateCoinPrices();
+});
 
+cron.schedule('10 10 * * *', async () => {
+	console.log('Запуск dailyDigest() в 10:10');
+	await dailyDigest();
+});
 
 bot.catch((err) => console.error(err));
 
