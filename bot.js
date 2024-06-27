@@ -72,12 +72,12 @@ bot.command('start', async (ctx) => {
 	}
 });
 
-cron.schedule('1 10 * * *', async () => {
+cron.schedule('1 8 * * *', async () => {
 	console.log('Запуск updateCoinPrices() в 10:01');
 	await updateCoinPrices();
 });
 
-cron.schedule('10 10 * * *', async () => {
+cron.schedule('10 8 * * *', async () => {
 	console.log('Запуск dailyDigest() в 10:10');
 	await dailyDigest();
 });
