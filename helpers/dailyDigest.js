@@ -1,14 +1,16 @@
-import { supabase } from "../supabase/index.js";
-import bot from "../bot.js";
 import moment from "moment";
-import { getColumnName, getSymbolForCurrency } from "./index.js";
+import bot from "../bot.js";
 import { mainKeyboard } from "../keyboards/index.js";
+import { supabase } from "../supabase/index.js";
+import { getColumnName, getSymbolForCurrency } from "./index.js";
 
 async function dailyDigest() {
 	console.log('Daily Digest started');
 
 	const currentDateWithOffset = moment().utcOffset(+3);
-	const formattedDate = currentDateWithOffset.format('YYYY-MM-DD');
+	const formattedDate = currentDateWithOffset.format('YYYY-MM-DD HH:mm:ss');
+
+	console.log(formattedDate)
 
 	try {
 		const { data: userCoins, error: userCoinsError } = await supabase
@@ -32,6 +34,9 @@ async function dailyDigest() {
 			return acc;
 		}, {});
 
+		let successCount = 0;
+		let blockedUsers = [];
+
 		for (const [tgId, { user, coins }] of Object.entries(userCoinsMap)) {
 			const digestMessage = coins.map(coin_id => {
 				const priceField = getColumnName(user.currency);
@@ -47,18 +52,40 @@ async function dailyDigest() {
 					reply_markup: mainKeyboard,
 					parse_mode: "HTML"
 				});
+				successCount++;
 			} catch (sendError) {
-				if (sendError.response && sendError.response.statusCode === 403) {
-					console.log(`User ${user.tg_id} has blocked the bot or not subscribed.`);
+				if (sendError && sendError.error_code === 400) {
+					blockedUsers.push(user);
+					// await bot.api.sendMessage('138387567', `Пользователь ${user.tg_id} – ${user.username} заблокировал бота или не подписан на него.`);
 				} else {
 					console.log(`Failed to send message to user ${user.tg_id}:`, sendError);
+					// await bot.api.sendMessage('138387567', `Ошибка отправки сообщения пользователю ${user.tg_id} – ${user.username}, ${sendError}`);
 				}
 			}
 		}
+
+		const resultMessage = `Сообщение успешно отправлено ${successCount} пользователям. ${blockedUsers.length} пользователей заблокировали бота или не подписаны на него.`;
+
+		const { error: insertError } = await supabase
+			.from('daily_digest_log')
+			.insert([{
+				date: formattedDate,
+				message: resultMessage,
+				sent_count: successCount,
+				not_sent_count: blockedUsers.length
+			}]);
+
+		if (insertError) {
+			throw new Error('Error inserting daily digest log');
+		}
+
+		await bot.api.sendMessage('138387567', resultMessage)
 
 	} catch (e) {
 		console.log(e);
 	}
 }
+
+
 
 export { dailyDigest };
