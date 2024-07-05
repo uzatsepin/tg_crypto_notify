@@ -5,5 +5,6 @@ export const mainKeyboard = new InlineKeyboard().
 		text('📊 Текущие цены', 'cur_price').row().
 		text('➕ Добавить валюту', 'add_watch').
 		text('➖ Удалить валюту', 'remove_watch').row().
-		text('📈 Тренды', 'trends')
+		text('📈 Тренды', 'trends').row().
+		text('🙋‍♂️Профиль', 'profile')
 
