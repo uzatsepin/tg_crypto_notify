@@ -43,7 +43,7 @@ addCoinHandler.callbackQuery("add_watch", async (ctx) => {
 		keyboard.row();
 	}
 
-	await ctx.editMessageText('Укажите, какую монету вы хотите добавить для отслеживания: 👇', {
+	await ctx.reply('Укажите, какую монету вы хотите добавить для отслеживания: 👇', {
 		reply_markup: keyboard.text("🏠 Домой", "home")
 	});
 });
@@ -75,14 +75,14 @@ addCoinHandler.callbackQuery(/coin_/, async (ctx) => {
 		.eq("coin_id", coinId);
 
 	if (userCoinsError) {
-		await ctx.editMessageText("Ошибка при проверке данных.", {
+		await ctx.reply("Ошибка при проверке данных.", {
 			reply_markup: mainKeyboard
 		});
 		return;
 	}
 
 	if (userCoins.length > 0) {
-		await ctx.editMessageText(`🙅‍♂️ Вы уже добавили эту монету.`, {
+		await ctx.reply(`🙅‍♂️ Вы уже добавили эту монету.`, {
 			reply_markup: mainKeyboard
 		});
 	} else {
@@ -91,11 +91,11 @@ addCoinHandler.callbackQuery(/coin_/, async (ctx) => {
 			.insert([{ tg_id: ctx.from.id, coin_id: coinId }]);
 
 		if (insertError) {
-			await ctx.editMessageText("☹️ Ошибка при добавлении монеты.", {
+			await ctx.reply("☹️ Ошибка при добавлении монеты.", {
 				reply_markup: mainKeyboard
 			});
 		} else {
-			await ctx.editMessageText(`🫡 Теперь вы следите за монетой: <b>${coinValue}</b>`, {
+			await ctx.reply(`🫡 Теперь вы следите за монетой: <b>${coinValue}</b>`, {
 				reply_markup: mainKeyboard,
 				parse_mode: "HTML"
 			});

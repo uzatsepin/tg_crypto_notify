@@ -1,8 +1,6 @@
 import {Composer, InlineKeyboard} from "grammy";
 import {supabase} from "../supabase/index.js";
 import percentNotify from "../helpers/percentNotify.js";
-import {createConversation} from "@grammyjs/conversations";
-import bot from "../bot.js";
 import {mainKeyboard} from "../keyboards/index.js";
 
 export const profileHandler = new Composer();
@@ -17,7 +15,7 @@ profileHandler.callbackQuery('profile', async (ctx) => {
 		text(`🔢 % оповещения (${userPercent}%)`, 'percent').row().
 		text('🏠 Домой', 'home')
 
-	await ctx.editMessageText(`${ctx.from.first_name}, ты зашел в режим настроек. \n\n⚙️ Выбери что ты хотел бы настроить`, {
+	await ctx.reply(`${ctx.from.first_name}, ты зашел в режим настроек. \n\n⚙️ Выбери что ты хотел бы настроить`, {
 		reply_markup: keyboard,
 		parse_mode: "HTML"
 	});
@@ -29,7 +27,7 @@ export async function getPercentFromUser(conversation, ctx) {
 	const tgId = await ctx.update.callback_query.from.id;
 	const percentFromDb = await percentNotify(ctx.from.id)
 
-	await ctx.editMessageText(`Укажи при каком % (проценте) измененения цены тебе должно приходить уведомление?\n\nСейчас установлено по умолчанию – ${percentFromDb}`)
+	await ctx.reply(`Укажи при каком % (проценте) измененения цены тебе должно приходить уведомление?\n\nСейчас установлено по умолчанию – ${percentFromDb}`)
 	const newPercent = await conversation.form.number();
 
 	try {

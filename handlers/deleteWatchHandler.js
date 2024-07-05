@@ -8,7 +8,7 @@ deleteWatchHandler.callbackQuery('remove_watch', async (ctx) => {
 	const {data: usersCoins} = await supabase.from("user_coins").select(`*, coin_id (*)`).eq("tg_id", ctx.from.id);
 
 	if (!usersCoins || usersCoins.length === 0) {
-		await ctx.editMessageText("Вы не отслеживаете ни одной монеты.", {
+		await ctx.reply("Вы не отслеживаете ни одной монеты.", {
 			reply_markup: mainKeyboard,
 			parse_mode: "HTML"
 		});
@@ -34,7 +34,7 @@ deleteWatchHandler.callbackQuery('remove_watch', async (ctx) => {
 
 	const keyboard = InlineKeyboard.from(rows);
 
-	await ctx.editMessageText('Какую валюту вы хотите удалить из отслеживания? 👇', {
+	await ctx.reply('Какую валюту вы хотите удалить из отслеживания? 👇', {
 		reply_markup: keyboard,
 	})
 });
@@ -51,7 +51,7 @@ deleteWatchHandler.callbackQuery(/remove_/, async (ctx) => {
 		.eq("coin_value", coinValue)
 
 	if (coinError || !coinData) {
-		await ctx.editMessageText("Ошибка при получении данных о монете.", {
+		await ctx.reply("Ошибка при получении данных о монете.", {
 			reply_markup: mainKeyboard
 		});
 		return;
@@ -68,11 +68,11 @@ deleteWatchHandler.callbackQuery(/remove_/, async (ctx) => {
 		.eq("coin_id", coinId);
 
 	if (deleteError) {
-		await ctx.editMessageText("Ошибка при удалении валюты из отслеживания.", {
+		await ctx.reply("Ошибка при удалении валюты из отслеживания.", {
 			reply_markup: mainKeyboard
 		});
 	} else {
-		await ctx.editMessageText(`Валюта успешно удалена из отслеживания.\n\nМожете добавить другую монету`, {
+		await ctx.reply(`Валюта успешно удалена из отслеживания.\n\nМожете добавить другую монету`, {
 			reply_markup: mainKeyboard
 		});
 	}

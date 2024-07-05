@@ -13,7 +13,7 @@ watchCoinHandler.callbackQuery("watch_list", async (ctx) => {
 
 
 	if (!coins || coins.length === 0) {
-		await ctx.editMessageText("Вы не отслеживаете ни одной монеты.", {
+		await ctx.reply("Вы не отслеживаете ни одной монеты.", {
 			reply_markup: mainKeyboard,
 			parse_mode: "HTML"
 		});
@@ -30,7 +30,7 @@ watchCoinHandler.callbackQuery("watch_list", async (ctx) => {
 		return `\n<b>${coin_id.coin_name}</b> – последняя цена: <b>${formatNumber(lastPrice)}${lastPrice === null ? "" : ` ${getSymbolForCurrency(tg_id.currency)}`}</b>\n\n⬆️ ТОП цена за день : <b>${high_24h} ${getSymbolForCurrency(tg_id.currency)}</b>\n⬇️ Самая низкая цена за день: <b>${low_24h} ${getSymbolForCurrency(tg_id.currency)}</b>\n 📝 Изменения за день: <b>${price_change_percentage_24h}%</b>\n📆Изменения за 7 дней: <b>${price_change_percentage_7d}</b>%\n💸Изменения за 14 дней: <b>${price_change_percentage_14d}%</b>`;
 	}).join('\n ');
 
-	await ctx.editMessageText(`<b>Вы отслеживаете такие монеты:</b> \n  ${coinInfo}\n`, {
+	await ctx.reply(`<b>Вы отслеживаете такие монеты:</b> \n  ${coinInfo}\n`, {
 		reply_markup: mainKeyboard,
 		parse_mode: "HTML"
 	});
